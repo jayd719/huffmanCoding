@@ -1,0 +1,33 @@
+@startuml de
+actor User
+participant "Input Data" as Data
+participant "Frequency Table" as FrequencyTable
+participant "Priority Queue" as PriorityQueue
+participant "Huffman Tree" as HuffmanTree
+participant "Encoded Data" as EncodedData
+
+User -> Data: Provide input text
+note right of Data: Input text is passed for encoding.
+
+Data -> FrequencyTable: Count character frequencies
+note right of FrequencyTable: Frequency table contains each character's count.
+
+FrequencyTable -> PriorityQueue: Add characters with frequencies
+note right of PriorityQueue: Min-heap stores characters by frequency.
+
+PriorityQueue -> PriorityQueue: Build min-heap
+note right of PriorityQueue: Min-heap ensures lowest frequency nodes are processed first.
+
+PriorityQueue -> HuffmanTree: Merge nodes to construct tree
+note right of HuffmanTree: Nodes with smallest frequencies are merged iteratively.
+
+HuffmanTree -> HuffmanTree: Generate binary codes for characters
+note right of HuffmanTree: Each character is assigned a unique, prefix-free code.
+
+HuffmanTree -> EncodedData: Encode input text using binary codes
+note right of EncodedData: Compressed data is generated.
+
+EncodedData -> User: Return compressed data
+note left of User: Compressed data is sent back to the user.
+
+@enduml

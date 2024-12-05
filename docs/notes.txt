@@ -1,0 +1,3 @@
+huffman coding in foundation for modern text compression techinieus.
+note good for short peices of text
+has to send the tree as well for decoding.
