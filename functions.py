@@ -12,12 +12,14 @@ __updated__ = "2024-12-5"
 from collections import Counter
 from Node import Node
 from PriorityQueue import PriorityQueue
+import re
 
 
 def build_frequency_table(file_handler) -> dict:
     # Builds a frequency table from file content (lowercased).
-    frequency_table = Counter(file_handler.read().lower())
-    return dict(frequency_table)
+    input_text = re.sub(r"\s+", " ", file_handler.read().lower())
+    frequency_table = Counter(input_text)
+    return dict(frequency_table), input_text
 
 
 def build_priority_queue(freqeuncy_table) -> PriorityQueue:
@@ -58,9 +60,9 @@ def build_encoding_map(root) -> dict:
     return encoding_map
 
 
-def encode(fh, encoding_map) -> str:
+def encode(input_text, encoding_map) -> str:
     # Encodes file content into a binary string using an encoding map.
-    return "".join(encoding_map[char] for char in fh.read().lower())
+    return "".join(encoding_map[char] for char in input_text)
 
 
 def decode(encoded_text, root):
@@ -81,13 +83,12 @@ def decode(encoded_text, root):
 
 if __name__ == "__main__":
     fh = open("input.txt", "r", encoding="utf-8")
-    f = build_frequency_table(fh)
+    f, input_text = build_frequency_table(fh)
     fh.close()
     pq = build_priority_queue(f)
     tree_root_node = build_huffman_tree(pq)
     encoding_map = build_encoding_map(tree_root_node)
-    fh = open("input.txt", "r", encoding="utf-8")
-    encoded_text = encode(fh, encoding_map)
+    encoded_text = encode(input_text, encoding_map)
     fh.close()
     print(encoded_text)
     decoded_text = decode(encoded_text, tree_root_node)
