@@ -1,5 +1,5 @@
 class Node:
-    def __init__(self, char, freq):
+    def __init__(self, char, freq, right=None, left=None):
         self.char = char
         self.freq = freq
         self.right = None

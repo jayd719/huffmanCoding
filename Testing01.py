@@ -32,6 +32,11 @@ if __name__ == "__main__":
     print(f"\tRemoved Node: {removed}")  # Should print "b:3"
     print(f"\tQueue After Removal: {pq}")  # Should print "a:5 c:8"
 
+
+    # Test Len 
+    print("Test Quent Lenght")
+    print(f"\tQueue Len: {len(pq)}") # should print 2
+    
     # Test Remove Again
     print("Test Remove Again")
     removed = pq.remove()
@@ -50,6 +55,10 @@ if __name__ == "__main__":
     # Test is_empty on empty queue
     print(f"\tIs Empty: {pq.is_empty()}")  # Should print True
 
+    print("All Tests Passed")
+    print("-" * 20)
     # Test Remove on Empty Queue
     print("Test Remove on Empty Queue")
     pq.remove()
+    
+    
