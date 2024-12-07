@@ -1,26 +1,33 @@
-@startuml seq
+@startuml sequence1
 actor User
+participant "main" as Main
+participant "ENCODE" as Encode
+participant "build_frequency_table" as BuildFrequencyTable
+participant "build_priority_queue" as BuildPriorityQueue
+participant "build_huffman_tree" as BuildHuffmanTree
+participant "build_encoding_map" as BuildEncodingMap
+participant "encode" as EncodeFunction
+participant "decode" as DecodeFunction
 
-participant "Input Data" as InputData
-participant "Frequency Table" as FrequencyTable
-participant "Priority Queue" as PriorityQueue
-participant "Huffman Tree" as HuffmanTree
-participant "Encoding Map" as EncodingMap
-participant "Encoded Data" as EncodedData
-
-==Encoding==
-User -> InputData : Provide input text
-InputData -> FrequencyTable : build_frequency_table()
-FrequencyTable -> PriorityQueue : build_priority_queue()
-PriorityQueue -> HuffmanTree : build_huffman_tree()
-HuffmanTree -> EncodingMap : build_encoding_map()
-EncodingMap -> EncodedData : encode(input text)
-EncodedData -> User : Return compressed data
-
-
-==Decoding==
-User -> EncodedData : Decode binary data (optional)
-EncodedData -> HuffmanTree : decode(binary data)
-HuffmanTree -> User : Return original text (optional)
-
+User -> Main: Start Program
+Main -> Encode: Call ENCODE(file_path)
+Encode -> BuildFrequencyTable: Generate frequency table
+BuildFrequencyTable -> BuildFrequencyTable: Process file line by line
+BuildFrequencyTable --> Encode: Return frequency table
+Encode -> BuildPriorityQueue: Create priority queue
+BuildPriorityQueue --> Encode: Return priority queue
+Encode -> BuildHuffmanTree: Build Huffman tree
+BuildHuffmanTree -> BuildHuffmanTree: Merge nodes iteratively
+BuildHuffmanTree --> Encode: Return Huffman tree root
+Encode -> BuildEncodingMap: Create encoding map
+BuildEncodingMap -> BuildEncodingMap: Perform depth-first search
+BuildEncodingMap --> Encode: Return encoding map
+Encode -> EncodeFunction: Encode text
+EncodeFunction -> EncodeFunction: Process file line by line
+EncodeFunction --> Encode: Return encoded text
+Encode -> DecodeFunction: Decode encoded text
+DecodeFunction -> DecodeFunction: Traverse Huffman tree
+DecodeFunction --> Encode: Return decoded text
+Encode --> Main: Return decoded text
+Main -> User: Display decoded text
 @enduml

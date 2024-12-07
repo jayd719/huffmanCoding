@@ -1,0 +1,998 @@
+<link
+  rel="stylesheet"
+  href="https://jayd719.github.io/assets/reports/report.css"
+/>
+<main class="markdown prose w-full break-words dark:prose-invert light">
+  <h1>Huffman Encoding and Decoding</h1>
+  <hr />
+  <h2>1. Overview</h2>
+  <p>
+    Huffman coding is a lossless data compression technique that assigns
+    variable-length binary codes to symbols based on their frequencies. Symbols
+    with higher frequencies are assigned shorter codes, while less frequent
+    symbols get longer codes. It uses a binary tree structure, where each leaf
+    node represents a symbol and its frequency. The process involves building
+    the tree by repeatedly merging the two least frequent nodes until a single
+    root remains. The code for each symbol is derived by traversing the tree
+    (e.g., left as 0, right as 1). This ensures an optimal prefix-free coding,
+    minimizing the total encoded data length.
+  </p>
+  <div id="index"></div>
+  <hr />
+  <h2>2. Key Components</h2>
+  <ol>
+    <li>
+      <p><strong>Frequency Table Construction</strong></p>
+      <ul>
+        <li>
+          Reads the input file and calculates the frequency of each character.
+        </li>
+        <li>
+          Complexity:
+          <ul>
+            <li>Time: O(n)</li>
+            <li>Space: O(k)</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <p><strong>Priority Queue Implementation</strong></p>
+      <ul>
+        <li>Uses a min-heap to store nodes for Huffman tree construction.</li>
+        <li>
+          Priority Queue Operations:
+          <ul>
+            <li>
+              Insertion:
+              <span class="katex"
+                ><span class="katex-mathml"
+                  ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                    ><semantics
+                      ><mrow
+                        ><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi
+                        ><mo>⁡</mo><mi>k</mi><mo stretchy="false">)</mo></mrow
+                      ><annotation encoding="application/x-tex"
+                        >O(\log k)</annotation
+                      ></semantics
+                    ></math
+                  ></span
+                ><span class="katex-html" aria-hidden="true"
+                  ><span class="base"
+                    ><span
+                      class="strut"
+                      style="height: 1em; vertical-align: -0.25em"
+                    ></span
+                    ><span
+                      class="mord mathnormal"
+                      style="margin-right: 0.02778em"
+                      >O</span
+                    ><span class="mopen">(</span
+                    ><span class="mop"
+                      >lo<span style="margin-right: 0.01389em">g</span></span
+                    ><span class="mspace" style="margin-right: 0.1667em"></span
+                    ><span
+                      class="mord mathnormal"
+                      style="margin-right: 0.03148em"
+                      >k</span
+                    ><span class="mclose">)</span></span
+                  ></span
+                ></span
+              >
+              per operation.
+            </li>
+            <li>
+              Removal:
+              <span class="katex"
+                ><span class="katex-mathml"
+                  ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                    ><semantics
+                      ><mrow
+                        ><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi
+                        ><mo>⁡</mo><mi>k</mi><mo stretchy="false">)</mo></mrow
+                      ><annotation encoding="application/x-tex"
+                        >O(\log k)</annotation
+                      ></semantics
+                    ></math
+                  ></span
+                ><span class="katex-html" aria-hidden="true"
+                  ><span class="base"
+                    ><span
+                      class="strut"
+                      style="height: 1em; vertical-align: -0.25em"
+                    ></span
+                    ><span
+                      class="mord mathnormal"
+                      style="margin-right: 0.02778em"
+                      >O</span
+                    ><span class="mopen">(</span
+                    ><span class="mop"
+                      >lo<span style="margin-right: 0.01389em">g</span></span
+                    ><span class="mspace" style="margin-right: 0.1667em"></span
+                    ><span
+                      class="mord mathnormal"
+                      style="margin-right: 0.03148em"
+                      >k</span
+                    ><span class="mclose">)</span></span
+                  ></span
+                ></span
+              >
+              per operation.
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <p><strong>Huffman Tree Construction</strong></p>
+      <ul>
+        <li>
+          Combines nodes from the priority queue to build a binary tree, where
+          leaf nodes represent characters and internal nodes represent
+          frequencies.
+        </li>
+        <li>
+          Complexity:
+          <ul>
+            <li>
+              Time:
+              <span class="katex"
+                ><span class="katex-mathml"
+                  ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                    ><semantics
+                      ><mrow
+                        ><mi>O</mi><mo stretchy="false">(</mo><mi>k</mi
+                        ><mi>log</mi><mo>⁡</mo><mi>k</mi
+                        ><mo stretchy="false">)</mo></mrow
+                      ><annotation encoding="application/x-tex"
+                        >O(k \log k)</annotation
+                      ></semantics
+                    ></math
+                  ></span
+                ><span class="katex-html" aria-hidden="true"
+                  ><span class="base"
+                    ><span
+                      class="strut"
+                      style="height: 1em; vertical-align: -0.25em"
+                    ></span
+                    ><span
+                      class="mord mathnormal"
+                      style="margin-right: 0.02778em"
+                      >O</span
+                    ><span class="mopen">(</span
+                    ><span
+                      class="mord mathnormal"
+                      style="margin-right: 0.03148em"
+                      >k</span
+                    ><span class="mspace" style="margin-right: 0.1667em"></span
+                    ><span class="mop"
+                      >lo<span style="margin-right: 0.01389em">g</span></span
+                    ><span class="mspace" style="margin-right: 0.1667em"></span
+                    ><span
+                      class="mord mathnormal"
+                      style="margin-right: 0.03148em"
+                      >k</span
+                    ><span class="mclose">)</span></span
+                  ></span
+                ></span
+              >.
+            </li>
+            <li>
+              Space:
+              <span class="katex"
+                ><span class="katex-mathml"
+                  ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                    ><semantics
+                      ><mrow
+                        ><mi>O</mi><mo stretchy="false">(</mo><mi>k</mi
+                        ><mo stretchy="false">)</mo></mrow
+                      ><annotation encoding="application/x-tex"
+                        >O(k)</annotation
+                      ></semantics
+                    ></math
+                  ></span
+                ><span class="katex-html" aria-hidden="true"
+                  ><span class="base"
+                    ><span
+                      class="strut"
+                      style="height: 1em; vertical-align: -0.25em"
+                    ></span
+                    ><span
+                      class="mord mathnormal"
+                      style="margin-right: 0.02778em"
+                      >O</span
+                    ><span class="mopen">(</span
+                    ><span
+                      class="mord mathnormal"
+                      style="margin-right: 0.03148em"
+                      >k</span
+                    ><span class="mclose">)</span></span
+                  ></span
+                ></span
+              >.
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <p><strong>Encoding Map Generation</strong></p>
+      <ul>
+        <li>
+          Performs a depth-first traversal of the Huffman tree to generate a
+          mapping of characters to binary strings.
+        </li>
+        <li>
+          Complexity:
+          <ul>
+            <li>
+              Time:
+              <span class="katex"
+                ><span class="katex-mathml"
+                  ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                    ><semantics
+                      ><mrow
+                        ><mi>O</mi><mo stretchy="false">(</mo><mi>k</mi
+                        ><mo stretchy="false">)</mo></mrow
+                      ><annotation encoding="application/x-tex"
+                        >O(k)</annotation
+                      ></semantics
+                    ></math
+                  ></span
+                ><span class="katex-html" aria-hidden="true"
+                  ><span class="base"
+                    ><span
+                      class="strut"
+                      style="height: 1em; vertical-align: -0.25em"
+                    ></span
+                    ><span
+                      class="mord mathnormal"
+                      style="margin-right: 0.02778em"
+                      >O</span
+                    ><span class="mopen">(</span
+                    ><span
+                      class="mord mathnormal"
+                      style="margin-right: 0.03148em"
+                      >k</span
+                    ><span class="mclose">)</span></span
+                  ></span
+                ></span
+              >.
+            </li>
+            <li>
+              Space:
+              <span class="katex"
+                ><span class="katex-mathml"
+                  ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                    ><semantics
+                      ><mrow
+                        ><mi>O</mi><mo stretchy="false">(</mo><mi>k</mi
+                        ><mo stretchy="false">)</mo></mrow
+                      ><annotation encoding="application/x-tex"
+                        >O(k)</annotation
+                      ></semantics
+                    ></math
+                  ></span
+                ><span class="katex-html" aria-hidden="true"
+                  ><span class="base"
+                    ><span
+                      class="strut"
+                      style="height: 1em; vertical-align: -0.25em"
+                    ></span
+                    ><span
+                      class="mord mathnormal"
+                      style="margin-right: 0.02778em"
+                      >O</span
+                    ><span class="mopen">(</span
+                    ><span
+                      class="mord mathnormal"
+                      style="margin-right: 0.03148em"
+                      >k</span
+                    ><span class="mclose">)</span></span
+                  ></span
+                ></span
+              >.
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <p><strong>Text Encoding</strong></p>
+      <ul>
+        <li>
+          Converts the input file into a binary string using the encoding map.
+        </li>
+        <li>
+          Complexity:
+          <ul>
+            <li>
+              Time:
+              <span class="katex"
+                ><span class="katex-mathml"
+                  ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                    ><semantics
+                      ><mrow
+                        ><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi
+                        ><mo stretchy="false">)</mo></mrow
+                      ><annotation encoding="application/x-tex"
+                        >O(n)</annotation
+                      ></semantics
+                    ></math
+                  ></span
+                ><span class="katex-html" aria-hidden="true"
+                  ><span class="base"
+                    ><span
+                      class="strut"
+                      style="height: 1em; vertical-align: -0.25em"
+                    ></span
+                    ><span
+                      class="mord mathnormal"
+                      style="margin-right: 0.02778em"
+                      >O</span
+                    ><span class="mopen">(</span
+                    ><span class="mord mathnormal">n</span
+                    ><span class="mclose">)</span></span
+                  ></span
+                ></span
+              >.
+            </li>
+            <li>
+              Space:
+              <span class="katex"
+                ><span class="katex-mathml"
+                  ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                    ><semantics
+                      ><mrow
+                        ><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi
+                        ><mo stretchy="false">)</mo></mrow
+                      ><annotation encoding="application/x-tex"
+                        >O(n)</annotation
+                      ></semantics
+                    ></math
+                  ></span
+                ><span class="katex-html" aria-hidden="true"
+                  ><span class="base"
+                    ><span
+                      class="strut"
+                      style="height: 1em; vertical-align: -0.25em"
+                    ></span
+                    ><span
+                      class="mord mathnormal"
+                      style="margin-right: 0.02778em"
+                      >O</span
+                    ><span class="mopen">(</span
+                    ><span class="mord mathnormal">n</span
+                    ><span class="mclose">)</span></span
+                  ></span
+                ></span
+              >.
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <p><strong>Text Decoding</strong></p>
+      <ul>
+        <li>
+          Decodes the binary string back to the original text using the Huffman
+          tree.
+        </li>
+        <li>
+          Complexity:
+          <ul>
+            <li>
+              Time:
+              <span class="katex"
+                ><span class="katex-mathml"
+                  ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                    ><semantics
+                      ><mrow
+                        ><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi
+                        ><mi>log</mi><mo>⁡</mo><mi>k</mi
+                        ><mo stretchy="false">)</mo></mrow
+                      ><annotation encoding="application/x-tex"
+                        >O(n \log k)</annotation
+                      ></semantics
+                    ></math
+                  ></span
+                ><span class="katex-html" aria-hidden="true"
+                  ><span class="base"
+                    ><span
+                      class="strut"
+                      style="height: 1em; vertical-align: -0.25em"
+                    ></span
+                    ><span
+                      class="mord mathnormal"
+                      style="margin-right: 0.02778em"
+                      >O</span
+                    ><span class="mopen">(</span
+                    ><span class="mord mathnormal">n</span
+                    ><span class="mspace" style="margin-right: 0.1667em"></span
+                    ><span class="mop"
+                      >lo<span style="margin-right: 0.01389em">g</span></span
+                    ><span class="mspace" style="margin-right: 0.1667em"></span
+                    ><span
+                      class="mord mathnormal"
+                      style="margin-right: 0.03148em"
+                      >k</span
+                    ><span class="mclose">)</span></span
+                  ></span
+                ></span
+              >.
+            </li>
+            <li>
+              Space:
+              <span class="katex"
+                ><span class="katex-mathml"
+                  ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                    ><semantics
+                      ><mrow
+                        ><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi
+                        ><mo stretchy="false">)</mo></mrow
+                      ><annotation encoding="application/x-tex"
+                        >O(n)</annotation
+                      ></semantics
+                    ></math
+                  ></span
+                ><span class="katex-html" aria-hidden="true"
+                  ><span class="base"
+                    ><span
+                      class="strut"
+                      style="height: 1em; vertical-align: -0.25em"
+                    ></span
+                    ><span
+                      class="mord mathnormal"
+                      style="margin-right: 0.02778em"
+                      >O</span
+                    ><span class="mopen">(</span
+                    ><span class="mord mathnormal">n</span
+                    ><span class="mclose">)</span></span
+                  ></span
+                ></span
+              >.
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ol>
+  <table>
+    <thead>
+      <tr>
+        <th><strong>Component</strong></th>
+        <th><strong>Time Complexity</strong></th>
+        <th><strong>Space Complexity</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Frequency Table</td>
+        <td>
+          <span class="katex"
+            ><span class="katex-mathml"
+              ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                ><semantics
+                  ><mrow
+                    ><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi
+                    ><mo stretchy="false">)</mo></mrow
+                  ><annotation encoding="application/x-tex"
+                    >O(n)</annotation
+                  ></semantics
+                ></math
+              ></span
+            ><span class="katex-html" aria-hidden="true"
+              ><span class="base"
+                ><span
+                  class="strut"
+                  style="height: 1em; vertical-align: -0.25em"
+                ></span
+                ><span class="mord mathnormal" style="margin-right: 0.02778em"
+                  >O</span
+                ><span class="mopen">(</span
+                ><span class="mord mathnormal">n</span
+                ><span class="mclose">)</span></span
+              ></span
+            ></span
+          >
+        </td>
+        <td>
+          <span class="katex"
+            ><span class="katex-mathml"
+              ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                ><semantics
+                  ><mrow
+                    ><mi>O</mi><mo stretchy="false">(</mo><mi>k</mi
+                    ><mo stretchy="false">)</mo></mrow
+                  ><annotation encoding="application/x-tex"
+                    >O(k)</annotation
+                  ></semantics
+                ></math
+              ></span
+            ><span class="katex-html" aria-hidden="true"
+              ><span class="base"
+                ><span
+                  class="strut"
+                  style="height: 1em; vertical-align: -0.25em"
+                ></span
+                ><span class="mord mathnormal" style="margin-right: 0.02778em"
+                  >O</span
+                ><span class="mopen">(</span
+                ><span class="mord mathnormal" style="margin-right: 0.03148em"
+                  >k</span
+                ><span class="mclose">)</span></span
+              ></span
+            ></span
+          >
+        </td>
+      </tr>
+      <tr>
+        <td>Priority Queue</td>
+        <td>
+          <span class="katex"
+            ><span class="katex-mathml"
+              ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                ><semantics
+                  ><mrow
+                    ><mi>O</mi><mo stretchy="false">(</mo><mi>k</mi><mi>log</mi
+                    ><mo>⁡</mo><mi>k</mi><mo stretchy="false">)</mo></mrow
+                  ><annotation encoding="application/x-tex"
+                    >O(k \log k)</annotation
+                  ></semantics
+                ></math
+              ></span
+            ><span class="katex-html" aria-hidden="true"
+              ><span class="base"
+                ><span
+                  class="strut"
+                  style="height: 1em; vertical-align: -0.25em"
+                ></span
+                ><span class="mord mathnormal" style="margin-right: 0.02778em"
+                  >O</span
+                ><span class="mopen">(</span
+                ><span class="mord mathnormal" style="margin-right: 0.03148em"
+                  >k</span
+                ><span class="mspace" style="margin-right: 0.1667em"></span
+                ><span class="mop"
+                  >lo<span style="margin-right: 0.01389em">g</span></span
+                ><span class="mspace" style="margin-right: 0.1667em"></span
+                ><span class="mord mathnormal" style="margin-right: 0.03148em"
+                  >k</span
+                ><span class="mclose">)</span></span
+              ></span
+            ></span
+          >
+        </td>
+        <td>
+          <span class="katex"
+            ><span class="katex-mathml"
+              ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                ><semantics
+                  ><mrow
+                    ><mi>O</mi><mo stretchy="false">(</mo><mi>k</mi
+                    ><mo stretchy="false">)</mo></mrow
+                  ><annotation encoding="application/x-tex"
+                    >O(k)</annotation
+                  ></semantics
+                ></math
+              ></span
+            ><span class="katex-html" aria-hidden="true"
+              ><span class="base"
+                ><span
+                  class="strut"
+                  style="height: 1em; vertical-align: -0.25em"
+                ></span
+                ><span class="mord mathnormal" style="margin-right: 0.02778em"
+                  >O</span
+                ><span class="mopen">(</span
+                ><span class="mord mathnormal" style="margin-right: 0.03148em"
+                  >k</span
+                ><span class="mclose">)</span></span
+              ></span
+            ></span
+          >
+        </td>
+      </tr>
+      <tr>
+        <td>Huffman Tree</td>
+        <td>
+          <span class="katex"
+            ><span class="katex-mathml"
+              ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                ><semantics
+                  ><mrow
+                    ><mi>O</mi><mo stretchy="false">(</mo><mi>k</mi><mi>log</mi
+                    ><mo>⁡</mo><mi>k</mi><mo stretchy="false">)</mo></mrow
+                  ><annotation encoding="application/x-tex"
+                    >O(k \log k)</annotation
+                  ></semantics
+                ></math
+              ></span
+            ><span class="katex-html" aria-hidden="true"
+              ><span class="base"
+                ><span
+                  class="strut"
+                  style="height: 1em; vertical-align: -0.25em"
+                ></span
+                ><span class="mord mathnormal" style="margin-right: 0.02778em"
+                  >O</span
+                ><span class="mopen">(</span
+                ><span class="mord mathnormal" style="margin-right: 0.03148em"
+                  >k</span
+                ><span class="mspace" style="margin-right: 0.1667em"></span
+                ><span class="mop"
+                  >lo<span style="margin-right: 0.01389em">g</span></span
+                ><span class="mspace" style="margin-right: 0.1667em"></span
+                ><span class="mord mathnormal" style="margin-right: 0.03148em"
+                  >k</span
+                ><span class="mclose">)</span></span
+              ></span
+            ></span
+          >
+        </td>
+        <td>
+          <span class="katex"
+            ><span class="katex-mathml"
+              ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                ><semantics
+                  ><mrow
+                    ><mi>O</mi><mo stretchy="false">(</mo><mi>k</mi
+                    ><mo stretchy="false">)</mo></mrow
+                  ><annotation encoding="application/x-tex"
+                    >O(k)</annotation
+                  ></semantics
+                ></math
+              ></span
+            ><span class="katex-html" aria-hidden="true"
+              ><span class="base"
+                ><span
+                  class="strut"
+                  style="height: 1em; vertical-align: -0.25em"
+                ></span
+                ><span class="mord mathnormal" style="margin-right: 0.02778em"
+                  >O</span
+                ><span class="mopen">(</span
+                ><span class="mord mathnormal" style="margin-right: 0.03148em"
+                  >k</span
+                ><span class="mclose">)</span></span
+              ></span
+            ></span
+          >
+        </td>
+      </tr>
+      <tr>
+        <td>Encoding Map</td>
+        <td>
+          <span class="katex"
+            ><span class="katex-mathml"
+              ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                ><semantics
+                  ><mrow
+                    ><mi>O</mi><mo stretchy="false">(</mo><mi>k</mi
+                    ><mo stretchy="false">)</mo></mrow
+                  ><annotation encoding="application/x-tex"
+                    >O(k)</annotation
+                  ></semantics
+                ></math
+              ></span
+            ><span class="katex-html" aria-hidden="true"
+              ><span class="base"
+                ><span
+                  class="strut"
+                  style="height: 1em; vertical-align: -0.25em"
+                ></span
+                ><span class="mord mathnormal" style="margin-right: 0.02778em"
+                  >O</span
+                ><span class="mopen">(</span
+                ><span class="mord mathnormal" style="margin-right: 0.03148em"
+                  >k</span
+                ><span class="mclose">)</span></span
+              ></span
+            ></span
+          >
+        </td>
+        <td>
+          <span class="katex"
+            ><span class="katex-mathml"
+              ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                ><semantics
+                  ><mrow
+                    ><mi>O</mi><mo stretchy="false">(</mo><mi>k</mi
+                    ><mo stretchy="false">)</mo></mrow
+                  ><annotation encoding="application/x-tex"
+                    >O(k)</annotation
+                  ></semantics
+                ></math
+              ></span
+            ><span class="katex-html" aria-hidden="true"
+              ><span class="base"
+                ><span
+                  class="strut"
+                  style="height: 1em; vertical-align: -0.25em"
+                ></span
+                ><span class="mord mathnormal" style="margin-right: 0.02778em"
+                  >O</span
+                ><span class="mopen">(</span
+                ><span class="mord mathnormal" style="margin-right: 0.03148em"
+                  >k</span
+                ><span class="mclose">)</span></span
+              ></span
+            ></span
+          >
+        </td>
+      </tr>
+      <tr>
+        <td>Encoding Text</td>
+        <td>
+          <span class="katex"
+            ><span class="katex-mathml"
+              ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                ><semantics
+                  ><mrow
+                    ><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi
+                    ><mo stretchy="false">)</mo></mrow
+                  ><annotation encoding="application/x-tex"
+                    >O(n)</annotation
+                  ></semantics
+                ></math
+              ></span
+            ><span class="katex-html" aria-hidden="true"
+              ><span class="base"
+                ><span
+                  class="strut"
+                  style="height: 1em; vertical-align: -0.25em"
+                ></span
+                ><span class="mord mathnormal" style="margin-right: 0.02778em"
+                  >O</span
+                ><span class="mopen">(</span
+                ><span class="mord mathnormal">n</span
+                ><span class="mclose">)</span></span
+              ></span
+            ></span
+          >
+        </td>
+        <td>
+          <span class="katex"
+            ><span class="katex-mathml"
+              ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                ><semantics
+                  ><mrow
+                    ><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi
+                    ><mo stretchy="false">)</mo></mrow
+                  ><annotation encoding="application/x-tex"
+                    >O(n)</annotation
+                  ></semantics
+                ></math
+              ></span
+            ><span class="katex-html" aria-hidden="true"
+              ><span class="base"
+                ><span
+                  class="strut"
+                  style="height: 1em; vertical-align: -0.25em"
+                ></span
+                ><span class="mord mathnormal" style="margin-right: 0.02778em"
+                  >O</span
+                ><span class="mopen">(</span
+                ><span class="mord mathnormal">n</span
+                ><span class="mclose">)</span></span
+              ></span
+            ></span
+          >
+        </td>
+      </tr>
+      <tr>
+        <td>Decoding Text</td>
+        <td>
+          <span class="katex"
+            ><span class="katex-mathml"
+              ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                ><semantics
+                  ><mrow
+                    ><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>log</mi
+                    ><mo>⁡</mo><mi>k</mi><mo stretchy="false">)</mo></mrow
+                  ><annotation encoding="application/x-tex"
+                    >O(n \log k)</annotation
+                  ></semantics
+                ></math
+              ></span
+            ><span class="katex-html" aria-hidden="true"
+              ><span class="base"
+                ><span
+                  class="strut"
+                  style="height: 1em; vertical-align: -0.25em"
+                ></span
+                ><span class="mord mathnormal" style="margin-right: 0.02778em"
+                  >O</span
+                ><span class="mopen">(</span
+                ><span class="mord mathnormal">n</span
+                ><span class="mspace" style="margin-right: 0.1667em"></span
+                ><span class="mop"
+                  >lo<span style="margin-right: 0.01389em">g</span></span
+                ><span class="mspace" style="margin-right: 0.1667em"></span
+                ><span class="mord mathnormal" style="margin-right: 0.03148em"
+                  >k</span
+                ><span class="mclose">)</span></span
+              ></span
+            ></span
+          >
+        </td>
+        <td>
+          <span class="katex"
+            ><span class="katex-mathml"
+              ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                ><semantics
+                  ><mrow
+                    ><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi
+                    ><mo stretchy="false">)</mo></mrow
+                  ><annotation encoding="application/x-tex"
+                    >O(n)</annotation
+                  ></semantics
+                ></math
+              ></span
+            ><span class="katex-html" aria-hidden="true"
+              ><span class="base"
+                ><span
+                  class="strut"
+                  style="height: 1em; vertical-align: -0.25em"
+                ></span
+                ><span class="mord mathnormal" style="margin-right: 0.02778em"
+                  >O</span
+                ><span class="mopen">(</span
+                ><span class="mord mathnormal">n</span
+                ><span class="mclose">)</span></span
+              ></span
+            ></span
+          >
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Overall</strong></td>
+        <td>
+          <span class="katex"
+            ><span class="katex-mathml"
+              ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                ><semantics
+                  ><mrow
+                    ><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>log</mi
+                    ><mo>⁡</mo><mi>k</mi><mo stretchy="false">)</mo></mrow
+                  ><annotation encoding="application/x-tex"
+                    >O(n \log k)</annotation
+                  ></semantics
+                ></math
+              ></span
+            ><span class="katex-html" aria-hidden="true"
+              ><span class="base"
+                ><span
+                  class="strut"
+                  style="height: 1em; vertical-align: -0.25em"
+                ></span
+                ><span class="mord mathnormal" style="margin-right: 0.02778em"
+                  >O</span
+                ><span class="mopen">(</span
+                ><span class="mord mathnormal">n</span
+                ><span class="mspace" style="margin-right: 0.1667em"></span
+                ><span class="mop"
+                  >lo<span style="margin-right: 0.01389em">g</span></span
+                ><span class="mspace" style="margin-right: 0.1667em"></span
+                ><span class="mord mathnormal" style="margin-right: 0.03148em"
+                  >k</span
+                ><span class="mclose">)</span></span
+              ></span
+            ></span
+          >
+        </td>
+        <td>
+          <span class="katex"
+            ><span class="katex-mathml"
+              ><math xmlns="http://www.w3.org/1998/Math/MathML"
+                ><semantics
+                  ><mrow
+                    ><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo
+                    ><mi>k</mi><mo stretchy="false">)</mo></mrow
+                  ><annotation encoding="application/x-tex"
+                    >O(n + k)</annotation
+                  ></semantics
+                ></math
+              ></span
+            ><span class="katex-html" aria-hidden="true"
+              ><span class="base"
+                ><span
+                  class="strut"
+                  style="height: 1em; vertical-align: -0.25em"
+                ></span
+                ><span class="mord mathnormal" style="margin-right: 0.02778em"
+                  >O</span
+                ><span class="mopen">(</span
+                ><span class="mord mathnormal">n</span
+                ><span class="mspace" style="margin-right: 0.2222em"></span
+                ><span class="mbin">+</span
+                ><span
+                  class="mspace"
+                  style="margin-right: 0.2222em"
+                ></span></span
+              ><span class="base"
+                ><span
+                  class="strut"
+                  style="height: 1em; vertical-align: -0.25em"
+                ></span
+                ><span class="mord mathnormal" style="margin-right: 0.03148em"
+                  >k</span
+                ><span class="mclose">)</span></span
+              ></span
+            ></span
+          >
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <figure>
+    <img style="width: 100%;" src="graph.png" alt="">
+  </figure>
+
+  <hr />
+  <h2><strong>5. Advantages</strong></h2>
+  <ol>
+    <li>
+      <strong>Efficiency</strong>: The system ensures optimal compression for
+      text files by leveraging character frequency data.
+    </li>
+    <li>
+      <strong>Scalability</strong>: Efficient heap-based operations and tree
+      traversals scale well with input size.
+    </li>
+    <li>
+      <strong>Accuracy</strong>: The decoding process accurately reconstructs
+      the original file.
+    </li>
+  </ol>
+  <hr />
+  <h2><strong>6. Applications</strong></h2>
+  <ul>
+    <li>File compression (e.g., ZIP archives).</li>
+    <li>Data transmission with limited bandwidth.</li>
+    <li>Storing large datasets efficiently.</li>
+  </ul>
+  <hr />
+  <h2><strong>7. Conclusion</strong></h2>
+  <p>
+    This Huffman encoding and decoding system demonstrates a robust solution for
+    text compression. Its
+    <span class="katex"
+      ><span class="katex-mathml"
+        ><math xmlns="http://www.w3.org/1998/Math/MathML"
+          ><semantics
+            ><mrow
+              ><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>log</mi
+              ><mo>⁡</mo><mi>k</mi><mo stretchy="false">)</mo></mrow
+            ><annotation encoding="application/x-tex"
+              >O(n \log k)</annotation
+            ></semantics
+          ></math
+        ></span
+      ><span class="katex-html" aria-hidden="true"
+        ><span class="base"
+          ><span
+            class="strut"
+            style="height: 1em; vertical-align: -0.25em"
+          ></span
+          ><span class="mord mathnormal" style="margin-right: 0.02778em">O</span
+          ><span class="mopen">(</span><span class="mord mathnormal">n</span
+          ><span class="mspace" style="margin-right: 0.1667em"></span
+          ><span class="mop"
+            >lo<span style="margin-right: 0.01389em">g</span></span
+          ><span class="mspace" style="margin-right: 0.1667em"></span
+          ><span class="mord mathnormal" style="margin-right: 0.03148em">k</span
+          ><span class="mclose">)</span></span
+        ></span
+      ></span
+    >
+    time complexity ensures efficient handling of large files with many unique
+    characters. The system's modular design and priority queue-based
+    implementation make it adaptable for real-world applications. Further
+    optimizations, such as parallel processing, can enhance its performance for
+    even larger datasets.
+  </p>
+</main>
+<script src="https://jayd719.github.io/assets/reports/index.js"></script>
