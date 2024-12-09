@@ -147,7 +147,7 @@ def DECODE(encoded_text, tree_root_node):
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.ERROR)
+    logging.basicConfig(level=logging.DEBUG)
 
     parser = argparse.ArgumentParser(description="Huffman Encoding/Decoding")
     parser.add_argument("file_path", help="Path to the input text file")
@@ -158,7 +158,7 @@ if __name__ == "__main__":
     try:
         encoded_text, root = ENCODE(args.file_path)
         logging.debug(f"Encoded Text: {encoded_text}")
-        decoded_text = DECODE(encoded_text,root)
+        decoded_text = DECODE(encoded_text, root)
         logging.debug(f"Decoded Text: {decoded_text}")
     except FileNotFoundError:
         logging.error("The specified file was not found.")
