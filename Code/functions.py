@@ -16,6 +16,7 @@ from Node import Node
 import argparse
 import logging
 import re
+import os
 
 
 # CONSTANTS
@@ -127,6 +128,35 @@ def decode(encoded_text, root) -> str:
     return "".join(decoded_text)
 
 
+def encoding_stats(file_path, encoded_text) -> None:
+    original_size = os.path.getsize(file_path) * 8
+    encoded_size = len(encoded_text)
+    compression_ratio = original_size / encoded_size
+    # log info
+    logging.info(f"ORGINAL SIZE: {original_size}")
+    logging.info(f"Compressed Size: {encoded_size}")
+    logging.info(f"Compression Ratio: {compression_ratio}")
+    return None
+
+
+def write_freqeuncy_table(ft, output_file="frequency.txt") -> None:
+    keys = list(ft.keys())
+    keys.sort()
+    fh = open(output_file, "w", encoding="utf-8")
+    for key in keys:
+        fh.write(f"{key}:{ft[key]}\n")
+    fh.close()
+    return None
+
+
+def write_encoding_map(em, output_file="codes.txt") -> None:
+    fh = open(output_file, "w", encoding="utf-8")
+    for key, value in em.items():
+        fh.write(f"{key}:{value}\n")
+    fh.close()
+    return None
+
+
 def ENCODE(file_path):
     """
     Performs the entire encoding process.
@@ -134,9 +164,11 @@ def ENCODE(file_path):
     frequency_table = build_frequency_table(file_path)
     if not frequency_table:
         return ""
+    write_freqeuncy_table(frequency_table)
     priority_queue = build_priority_queue(frequency_table)
     tree_root_node = build_huffman_tree(priority_queue)
     encoding_map = build_encoding_map(tree_root_node)
+    write_encoding_map(encoding_map)
     encoded_text = encode(file_path, encoding_map)
     return encoded_text, tree_root_node
 
