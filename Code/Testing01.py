@@ -1,4 +1,13 @@
-# Testing PriorityQueue
+"""
+-------------------------------------------------------
+Assignment 5 Priority Queue Testing
+-------------------------------------------------------
+Author:  Jashandeep Singh
+ID:      169018282
+Email:   sing8282@mylaurier.ca
+__updated__ = "2024-12-5"
+-------------------------------------------------------
+"""
 
 from PriorityQueue import PriorityQueue
 from Node import Node

@@ -10,6 +10,7 @@ __updated__ = "2024-12-5"
 """
 
 from functions import *
+from HuffmanTree import HuffmanTree
 
 
 def ENCODE(file_path, output_file):
@@ -19,15 +20,21 @@ def ENCODE(file_path, output_file):
     frequency_table = build_frequency_table(file_path)
     if not frequency_table:
         return ""
+    
     write_table_to_disk(frequency_table)
     priority_queue = build_priority_queue(frequency_table)
-    tree_root_node = build_huffman_tree(priority_queue)
-    encoding_map = build_encoding_map(tree_root_node)
+    
+    ht = HuffmanTree()
+    ht.initialize_pq(priority_queue)
+    
+    encoding_map = build_encoding_map(ht.root)
     write_table_to_disk(encoding_map, "codes.txt")
+    
     encoded_text = encode(file_path, encoding_map)
     write_encoded_text(encoded_text)
+    
     encoding_stats(file_path, output_file)
-    return encoded_text, tree_root_node
+    return encoded_text
 
 
 if __name__ == "__main__":
@@ -39,7 +46,7 @@ if __name__ == "__main__":
     logging.info("Starting Huffman Encoding/Decoding...")
     try:
         output_file = "compressed.bin"
-        encoded_text, root = ENCODE(args.file_path, output_file)
+        encoded_text = ENCODE(args.file_path, output_file)
     except FileNotFoundError:
         logging.error("The specified file was not found.")
     except ValueError as ve:

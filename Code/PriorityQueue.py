@@ -1,6 +1,6 @@
 """
 -------------------------------------------------------
-Assignment 5 PriorityQueue
+Assignment 5 Priority Queue
 -------------------------------------------------------
 Author:  Jashandeep Singh
 ID:      169018282

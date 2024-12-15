@@ -23,4 +23,7 @@ def write_encoded_text(data, output_file="compressed.bin") -> None:
         fh.write(binary_data)
 
 
+def read_encoded_data():
+    return ''
+
 # write_encoded_text("1010101010")

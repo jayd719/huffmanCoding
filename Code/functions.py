@@ -58,22 +58,6 @@ def build_priority_queue(frequency_table) -> PriorityQueue:
     return pq
 
 
-def build_huffman_tree(priority_queue) -> Node:
-    """
-    Builds a Huffman tree from a priority queue.
-    """
-    if priority_queue.is_empty():
-        raise ValueError("Priority queue is empty")
-
-    while len(priority_queue) > 1:
-        node_a = priority_queue.remove()
-        node_b = priority_queue.remove()
-        parent_freq = node_a.freq + node_b.freq
-        parentNode = Node(None, parent_freq, node_a, node_b)
-        priority_queue.insert(parentNode)
-    return priority_queue.remove()
-
-
 def depth_first_search(node, encoded_text, encoding_map) -> None:
     """
     Recursively generates encoding map from a Huffman tree.
@@ -138,12 +122,3 @@ def encoding_stats(file_path, output_file) -> None:
     logging.info(f"Compressed Size: {encoded_size} Bytes")
     logging.info(f"Compression Ratio: {compression_ratio} %")
     return None
-
-
-def DECODE(encoded_text, tree_root_node):
-    decoded_text = decode(encoded_text, tree_root_node)
-    return decoded_text
-
-
-# decoded_text = DECODE(encoded_text, root)
-# logging.debug(f"Decoded Text: {decoded_text}")
