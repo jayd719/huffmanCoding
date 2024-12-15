@@ -130,33 +130,14 @@ def decode(encoded_text, root) -> str:
 
 
 def encoding_stats(file_path, output_file) -> None:
-    original_size = os.path.getsize(file_path) * 8
-    encoded_size = os.path.getsize(output_file) * 8
-    compression_ratio = round(encoded_size / original_size, 2)
+    original_size = os.path.getsize(file_path)
+    encoded_size = os.path.getsize(output_file)
+    compression_ratio = round((encoded_size / original_size) * 100, 2)
     # log info
-    logging.info(f"ORGINAL SIZE: {original_size}")
-    logging.info(f"Compressed Size: {encoded_size}")
+    logging.info(f"ORGINAL SIZE: {original_size} Bytes")
+    logging.info(f"Compressed Size: {encoded_size} Bytes")
     logging.info(f"Compression Ratio: {compression_ratio} %")
     return None
-
-
-def ENCODE(file_path):
-    """
-    Performs the entire encoding process.
-    """
-    frequency_table = build_frequency_table(file_path)
-    if not frequency_table:
-        return ""
-    write_table_to_disk(frequency_table)
-    priority_queue = build_priority_queue(frequency_table)
-    tree_root_node = build_huffman_tree(priority_queue)
-    encoding_map = build_encoding_map(tree_root_node)
-    write_table_to_disk(encoding_map, "codes.txt")
-    encoded_text = encode(file_path, encoding_map)
-    output_file = "compressed.bin"
-    write_encoded_text(encoded_text)
-    encoding_stats(file_path, output_file)
-    return encoded_text, tree_root_node
 
 
 def DECODE(encoded_text, tree_root_node):
@@ -164,23 +145,5 @@ def DECODE(encoded_text, tree_root_node):
     return decoded_text
 
 
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
-
-    parser = argparse.ArgumentParser(description="Huffman Encoding/Decoding")
-    parser.add_argument("file_path", help="Path to the input text file")
-    args = parser.parse_args()
-
-    logging.info("Starting Huffman Encoding/Decoding...")
-
-    try:
-        encoded_text, root = ENCODE(args.file_path)
-        logging.debug(f"Encoded Text: {encoded_text}")
-        decoded_text = DECODE(encoded_text, root)
-        logging.debug(f"Decoded Text: {decoded_text}")
-    except FileNotFoundError:
-        logging.error("The specified file was not found.")
-    except ValueError as ve:
-        logging.error(f"Value Error: {ve}")
-    except Exception as e:
-        logging.error("An unexpected error occurred: %s", e)
+# decoded_text = DECODE(encoded_text, root)
+# logging.debug(f"Decoded Text: {decoded_text}")
