@@ -10,13 +10,14 @@ __updated__ = "2024-12-5"
 """
 
 from Node import Node
+from PriorityQueue import PriorityQueue
 
 
 class HuffmanTree:
     def __init__(self):
         self.root = None
 
-    def initialize_pq(self, priority_queue):
+    def initialize_pq(self, priority_queue) -> Node:
         """
         Builds a Huffman tree from a priority queue.
         """
@@ -32,5 +33,33 @@ class HuffmanTree:
         self.root = priority_queue.remove()
         return self.root
 
-    def intitiale_preq(file_path):
+    def write_node_aux(self, node, fh) -> None:
+        if node is not None:
+            fh.write(f"{node}\n")
+            self.write_node_aux(node.left, fh)
+            self.write_node_aux(node.right, fh)
         return None
+
+    def write_tree_to_file(self, file_path="tree.txt") -> None:
+        fh = open(file_path, "w", encoding="utf-8")
+        self.write_node_aux(self.root, fh)
+        fh.close()
+        return 1
+
+    def intitiale_from_freq(self, file_path="frequency.txt"):
+        fh = open(file_path, "r", encoding="utf-8")
+        pq = PriorityQueue()
+        try:
+            line = fh.readline()
+            while line is not None:
+                char, freq = line.strip().split(":")
+                pq.insert(Node(char, int(freq)))
+                line = fh.readline()
+            fh.close()
+
+        except FileNotFoundError:
+            raise FileNotFoundError(f"file not found: {file_path}")
+        except IOError:
+            raise IOError(f"Error Opening File {file_path}")
+
+        return self.initialize_pq(pq)

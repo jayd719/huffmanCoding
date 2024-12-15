@@ -26,6 +26,7 @@ def ENCODE(file_path, output_file):
     
     ht = HuffmanTree()
     ht.initialize_pq(priority_queue)
+    ht.write_tree_to_file()
     
     encoding_map = build_encoding_map(ht.root)
     write_table_to_disk(encoding_map, "codes.txt")
@@ -43,7 +44,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Huffman Encoding/Decoding")
     parser.add_argument("file_path", help="Path to the input text file")
     args = parser.parse_args()
-    logging.info("Starting Huffman Encoding/Decoding...")
+    logging.info("Starting Huffman Encoding")
     try:
         output_file = "compressed.bin"
         encoded_text = ENCODE(args.file_path, output_file)
