@@ -18,8 +18,9 @@ def write_table_to_disk(ft, output_file="frequency.txt") -> None:
 
 
 def write_encoded_text(data, output_file="compressed.bin") -> None:
+    binary_data = int(data, 2).to_bytes((len(data) + 7) // 8, byteorder='big')
     with open(output_file, "wb") as fh:
-        fh.write(data.encode("utf-8"))
+        fh.write(binary_data)
 
 
-write_encoded_text("this")
+# write_encoded_text("1010101010")

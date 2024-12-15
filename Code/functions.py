@@ -129,10 +129,10 @@ def decode(encoded_text, root) -> str:
     return "".join(decoded_text)
 
 
-def encoding_stats(file_path, encoded_text) -> None:
+def encoding_stats(file_path, output_file) -> None:
     original_size = os.path.getsize(file_path) * 8
-    encoded_size = len(encoded_text)
-    compression_ratio = round(encoded_size / original_size,2)
+    encoded_size = os.path.getsize(output_file) * 8
+    compression_ratio = round(encoded_size / original_size, 2)
     # log info
     logging.info(f"ORGINAL SIZE: {original_size}")
     logging.info(f"Compressed Size: {encoded_size}")
@@ -153,8 +153,9 @@ def ENCODE(file_path):
     encoding_map = build_encoding_map(tree_root_node)
     write_table_to_disk(encoding_map, "codes.txt")
     encoded_text = encode(file_path, encoding_map)
+    output_file = "compressed.bin"
     write_encoded_text(encoded_text)
-    encoding_stats(file_path, encoded_text)
+    encoding_stats(file_path, output_file)
     return encoded_text, tree_root_node
 
 
