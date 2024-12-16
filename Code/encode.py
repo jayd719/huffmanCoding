@@ -31,15 +31,15 @@ def ENCODE(file_path, output_file):
     encoding_map = build_encoding_map(ht.root)
     write_table_to_disk(encoding_map, "codes.txt")
     
+    
     encoded_text = encode(file_path, encoding_map)
     write_encoded_text(encoded_text)
-    
     encoding_stats(file_path, output_file)
     return encoded_text
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.ERROR)
+    logging.basicConfig(level=logging.DEBUG)
 
     parser = argparse.ArgumentParser(description="Huffman Encoding/Decoding")
     parser.add_argument("file_path", help="Path to the input text file")

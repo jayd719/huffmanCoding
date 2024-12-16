@@ -17,7 +17,6 @@ import argparse
 import logging
 import re
 import os
-from utilis import *
 
 
 # CONSTANTS
@@ -26,6 +25,32 @@ BIT_ONE = "1"
 
 
 # FUNCTIONS
+def generate_standard_list() -> list:
+    characters = [" ", ",", "."]
+    characters.extend(map(str, range(10)))
+    characters.extend(chr(i) for i in range(ord("a"), ord("z") + 1))
+    return characters
+
+
+def write_table_to_disk(ft, output_file="frequency.txt") -> None:
+    keys = generate_standard_list()
+    fh = open(output_file, "w", encoding="utf-8")
+    for key in keys:
+        if key in ft:
+            fh.write(f"{key}:{ft[key]}\n")
+        else:
+            fh.write(f"{key}:0\n")
+    fh.close()
+    return None
+
+
+def write_encoded_text(data, output_file="compressed.bin") -> None:
+    binary_data = int(data, 2).to_bytes((len(data) + 7) // 8, byteorder="big")
+    with open(output_file, "wb") as fh:
+        fh.write(binary_data)
+    return
+
+
 def build_frequency_table(file_path) -> dict:
     """
     Builds a frequency table by streaming through the file line by line.
@@ -40,10 +65,16 @@ def build_frequency_table(file_path) -> dict:
                 processed_line = re.sub(r"\s+", " ", line.lower())
                 if not processed_line.strip():
                     continue
+                frequency_table.update(processed_line)
 
-                filtered_chars = (char for char in processed_line if char in acceptable_chars)
-                frequency_table.update(filtered_chars)
-        return dict(frequency_table)
+        frequency_table = dict(frequency_table)
+        final_table = {}
+        for char in acceptable_chars:
+            if char in frequency_table:
+                final_table[char] = frequency_table[char]
+            else:
+                final_table[char] = 0
+        return final_table
 
     except (FileNotFoundError, IOError) as e:
         logging.error(f"Error with file '{file_path}': {e}")
@@ -85,11 +116,13 @@ def encode(file_path, encoding_map) -> str:
     Encodes file content into a binary string using an encoding map by streaming the file.
     """
     encoded_text = []
+    acceptable_chars = generate_standard_list()
     try:
         with open(file_path, "r", encoding="utf-8") as file_handler:
             for line in file_handler:
                 for char in re.sub(r"\s+", " ", line.lower()):
-                    encoded_text.append(encoding_map[char])
+                    if char in acceptable_chars:
+                        encoded_text.append(encoding_map[char])
     except FileNotFoundError:
         raise FileNotFoundError(f"file not found: {file_path}")
     except IOError:
@@ -119,7 +152,6 @@ def encoding_stats(file_path, output_file) -> None:
     original_size = os.path.getsize(file_path)
     encoded_size = os.path.getsize(output_file)
     compression_ratio = round((encoded_size / original_size) * 100, 2)
-    # log info
     logging.info(f"ORGINAL SIZE: {original_size} Bytes")
     logging.info(f"Compressed Size: {encoded_size} Bytes")
     logging.info(f"Compression Ratio: {compression_ratio} %")
