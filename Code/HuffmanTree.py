@@ -8,8 +8,10 @@ Email:   sing8282@mylaurier.ca
 __updated__ = "2024-12-5"
 -------------------------------------------------------
 """
+
 from Node import Node
 from PriorityQueue import PriorityQueue
+
 
 class HuffmanTree:
     def __init__(self):
@@ -22,7 +24,12 @@ class HuffmanTree:
         while len(priority_queue) > 1:
             # Remove two nodes with the lowest frequency
             left_node = priority_queue.remove()
+            while left_node.freq == 0:
+                left_node = priority_queue.remove()
+
             right_node = priority_queue.remove()
+            while right_node.freq == 0:
+                right_node = priority_queue.remove()
 
             # Combine frequencies and create a parent node
             combined_freq = left_node.freq + right_node.freq
@@ -60,7 +67,9 @@ class HuffmanTree:
         except FileNotFoundError:
             raise FileNotFoundError(f"File not found: {file_path}")
         except ValueError:
-            raise ValueError(f"Invalid line format in file {file_path}. Expected 'char:freq'.")
+            raise ValueError(
+                f"Invalid line format in file {file_path}. Expected 'char:freq'."
+            )
         except IOError as e:
             raise IOError(f"Error reading from file {file_path}: {e}")
 
