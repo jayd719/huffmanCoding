@@ -46,6 +46,7 @@ if __name__ == "__main__":
     logging.info("Starting Huffman Decoding...")
     try:
         DECODE()
+        logging.info("Successfully Decoded compressed.bin")
     except FileNotFoundError:
         logging.error("The specified file was not found.")
     except ValueError as ve:
