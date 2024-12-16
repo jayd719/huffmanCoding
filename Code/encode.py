@@ -39,7 +39,7 @@ def ENCODE(file_path, output_file):
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.ERROR)
 
     parser = argparse.ArgumentParser(description="Huffman Encoding/Decoding")
     parser.add_argument("file_path", help="Path to the input text file")

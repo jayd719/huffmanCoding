@@ -51,15 +51,17 @@ class HuffmanTree:
         pq = PriorityQueue()
         try:
             line = fh.readline()
-            while line is not None:
-                char, freq = line.strip().split(":")
+            while line is not None and len(line):
+                char, freq = (line.strip()).split(":")
                 pq.insert(Node(char, int(freq)))
                 line = fh.readline()
             fh.close()
 
+            
         except FileNotFoundError:
             raise FileNotFoundError(f"file not found: {file_path}")
         except IOError:
             raise IOError(f"Error Opening File {file_path}")
-
+        
         return self.initialize_pq(pq)
+

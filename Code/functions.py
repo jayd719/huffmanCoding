@@ -30,22 +30,24 @@ def build_frequency_table(file_path) -> dict:
     """
     Builds a frequency table by streaming through the file line by line.
     """
+
     try:
         frequency_table = Counter()
+        acceptable_chars = generate_standard_list()
+
         with open(file_path, "r", encoding="utf-8") as file_handler:
             for line in file_handler:
                 processed_line = re.sub(r"\s+", " ", line.lower())
                 if not processed_line.strip():
                     continue
-                frequency_table.update(processed_line)
-                logging.debug(f"Text_Encoded: {line}")
 
-    except FileNotFoundError:
-        raise FileNotFoundError(f"File '{file_path}' not found.")
-    except IOError:
-        raise IOError(f"Error Opening file {file_path}")
+                filtered_chars = (char for char in processed_line if char in acceptable_chars)
+                frequency_table.update(filtered_chars)
+        return dict(frequency_table)
 
-    return dict(frequency_table)
+    except (FileNotFoundError, IOError) as e:
+        logging.error(f"Error with file '{file_path}': {e}")
+        raise
 
 
 def build_priority_queue(frequency_table) -> PriorityQueue:

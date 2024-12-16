@@ -10,23 +10,34 @@ __updated__ = "2024-12-5"
 """
 
 from functions import *
+from HuffmanTree import HuffmanTree
 
 
+def DECODE(compressed_file="compressed.bin", freq_table="frequency.txt"):
+    ht = HuffmanTree()
+    node = ht.intitiale_from_freq(freq_table)
+    fh = open(compressed_file, "rb")
+    fh_out = open("decoded.txt", "w", encoding="utf-8")
+    ht.write_tree_to_file()
+    for bit in fh.read():
+        if bit == BIT_ZERO:
+            node = node.left
+        else:
+            node = node.right
 
-def DECODE(encoded_text, tree_root_node):
-    decoded_text = decode(encoded_text, tree_root_node)
-    return decoded_text
+        if node.char:
+            fh_out.write(f"{node.char}")
+            node = ht.root
 
-
-
-
+    fh.close()
+    fh_out.close()
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.DEBUG)
     logging.info("Starting Huffman Decoding...")
     try:
-        Input_file = "compressed.bin"
+        DECODE()
     except FileNotFoundError:
         logging.error("The specified file was not found.")
     except ValueError as ve:
